@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn import preprocessing
-from pyml.utils import utils
+from hrxmlpy.utils import utils
 import logging
 
 # logging.getLogger(__name__)

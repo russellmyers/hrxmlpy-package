@@ -5,7 +5,7 @@ from data_loader.blobstore import EloiseDevBlobService
 from os import listdir
 from os.path import isfile, join
 import joblib
-from pyml.interface.hrx.mlconfig import MLConfig
+from hrxmlpy.interface.hrx.mlconfig import MLConfig
 
 
 def get_features_and_labels(model_config_params):

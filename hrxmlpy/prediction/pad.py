@@ -1,10 +1,10 @@
 """
 Test prediction code using PAD ml service
 """
-from pyml.utils.utils import load_sample_model_config_params, apply_anomaly_thresholds
+from hrxmlpy.utils.utils import load_sample_model_config_params, apply_anomaly_thresholds
 import logging
-from pyml.pipeline.train.trainer import Predicter
-from pyml.interface.hrx.mlconfig import MLConfig
+from hrxmlpy.pipeline.train.trainer import Predicter
+from hrxmlpy.interface.hrx.mlconfig import MLConfig
 from data_loader.io import EloiseSQLDatabase
 import pandas as pd
 import json

@@ -1,6 +1,6 @@
-from pyml.algorithms.isolation_forest import EnhancedIsolationForest
-from pyml.algorithms.sklearn_decision_forest_analyzer import SKDecisionForestAnalyser
-from pyml.utils import utils
+from hrxmlpy.algorithms.isolation_forest import EnhancedIsolationForest
+from hrxmlpy.algorithms.sklearn_decision_forest_analyzer import SKDecisionForestAnalyser
+from hrxmlpy.utils import utils
 
 import numpy as np
 import pandas as pd

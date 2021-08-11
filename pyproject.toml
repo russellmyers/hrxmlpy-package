@@ -9,6 +9,7 @@ readme = 'README.md'
 python = "^3.7"
 requests = "2.26.0"
 pandas = "1.1.4"
+scikit-learn = "0.22"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
