@@ -11,6 +11,13 @@ class MLConfig:
     ANOMALY_THRESHOLD_TYPE_PERCENTAGE = "P"
     ANOMALY_THRESHOLD_TYPE_RANK = "R"
 
+    DEFAULT_CLIENT_ID = "ZZZ"
+    DEFAULT_COMPANY_ID = "Z99"
+    DEFAULT_AUTH_ENDPOINT = "/auth/tokens"
+    DEFAULT_ML_SERVICES_ENDPOINT = "/api/V2/ml-services"
+    DEFAULT_MODELS_ENDPOINT = "/api/V2/model-info"
+    DEFAULT_CUSTOMER_MODELS_ENDPOINT = "/api/V2/customer-models"
+
     def __init__(self):
         pass
 
@@ -20,10 +27,10 @@ class MLConfig:
         data = {
             "clientId": os.environ["MLCONFIG_API_CLIENT_ID"],
             "clientSecret": os.environ["MLCONFIG_API_CLIENT_SECRET"],
-            "customerId": os.environ["MLCONFIG_API_CUSTOMER_ID"],
-            "companyId": os.environ["MLCONFIG_API_COMPANY_ID"],
+            "customerId": os.environ.get("MLCONFIG_API_CUSTOMER_ID", MLConfig.DEFAULT_CLIENT_ID),
+            "companyId": os.environ.get("MLCONFIG_API_COMPANY_ID", MLConfig.DEFAULT_COMPANY_ID)
         }
-        url = os.environ["MLCONFIG_API_BASE_URL"] + os.environ["MLCONFIG_API_AUTH_ENDPOINT"]
+        url = os.environ["MLCONFIG_API_BASE_URL"] + os.environ.get("MLCONFIG_API_AUTH_ENDPOINT", MLConfig.DEFAULT_AUTH_ENDPOINT)
         try:
             response = requests.post(url, data=data, headers=None)
         except Exception as e:
@@ -55,7 +62,7 @@ class MLConfig:
 
     @staticmethod
     def add_ml_service_technical_details(ml_service_details):
-        ml_service_tech_details_all = MLConfig().get(os.environ["MLCONFIG_API_ML_SERVICES_ENDPOINT"])
+        ml_service_tech_details_all = MLConfig().get(os.environ.get("MLCONFIG_API_ML_SERVICES_ENDPOINT", MLConfig.DEFAULT_ML_SERVICES_ENDPOINT))
         for model_config_params in ml_service_details:
             ml_service_tech_details = [
                 x for x in ml_service_tech_details_all["items"] if x["code"] == model_config_params["mlService"]
@@ -66,7 +73,7 @@ class MLConfig:
     @staticmethod
     def get_ml_model_details(gcc, lcc, payroll_area, country):
         token = MLConfig().auth_token_header
-        model_info_endpoint = os.environ["MLCONFIG_API_MODELS_ENDPOINT"]
+        model_info_endpoint = os.environ.get("MLCONFIG_API_MODELS_ENDPOINT", MLConfig.DEFAULT_MODELS_ENDPOINT)
         response_json_data = {}
         if token:
             request_url = os.environ["MLCONFIG_API_BASE_URL"] + model_info_endpoint
@@ -85,7 +92,7 @@ class MLConfig:
     @staticmethod
     def get_all_customers_using_model(ml_service, model_code):
         token = MLConfig().auth_token_header
-        customer_models_endpoint = os.environ["MLCONFIG_API_CUSTOMER_MODELS_ENDPOINT"]
+        customer_models_endpoint = os.environ.get("MLCONFIG_API_CUSTOMER_MODELS_ENDPOINT", MLConfig.DEFAULT_CUSTOMER_MODELS_ENDPOINT)
         response_json_data = {}
 
         customers = []
@@ -128,7 +135,7 @@ class MLConfig:
         # TODO: To be updated once the ml-services endpoint is amended
         ml_service_id_map = {"PAD": 1, "TWV": 2}
         token = MLConfig().auth_token_header
-        ml_services_endpoint = f"{os.environ['MLCONFIG_API_ML_SERVICES_ENDPOINT']}/{ml_service_id_map[ml_service_code]}"
+        ml_services_endpoint = f"{os.environ.get('MLCONFIG_API_ML_SERVICES_ENDPOINT', MLConfig.DEFAULT_ML_SERVICES_ENDPOINT)}/{ml_service_id_map[ml_service_code]}"
         if token:
             request_url = os.environ["MLCONFIG_API_BASE_URL"] + ml_services_endpoint
             response = requests.get(request_url, headers=token)
@@ -163,3 +170,18 @@ class MLConfig:
             anom_threshold_val = 0
 
         return anom_threshold_type, anom_threshold_val
+
+
+if __name__ == '__main__':
+    os.environ["MLCONFIG_API_CLIENT_ID"] = "d7947bf7-3240-435d-8a79-5b2fc05248c7"
+    os.environ["MLCONFIG_API_CLIENT_SECRET"] = "DaTbzvauLJyFqDjpmE5nD5Q7t887TBHdZozxxagBsvQsHePXawgpwoTHuWSAydLj"
+    os.environ["MLCONFIG_API_BASE_URL"] = "http://localhost:5000"
+    ml_config = MLConfig()
+    token_header = ml_config.auth_token_header
+    print(token_header)
+
+    ml_service_details = ml_config.get_ml_service_details("TWV")
+    print(ml_service_details)
+
+    model_dets = ml_config.get_ml_model_details("ZZZ", "Z99", "Z9", "GL")
+    print(model_dets)
