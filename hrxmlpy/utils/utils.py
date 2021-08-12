@@ -1,10 +1,6 @@
 import ast
 import pandas as pd
 import logging
-from data_loader.blobstore import EloiseDevBlobService
-from os import listdir
-from os.path import isfile, join
-import joblib
 from hrxmlpy.interface.hrx.mlconfig import MLConfig
 
 
@@ -114,107 +110,6 @@ def init_logger(name, level=logging.INFO):
     logger.addHandler(ch)
     logging.getLogger("azure.storage.common.storageclient").setLevel(logging.WARNING)
     return logger
-
-
-def collect_local_transformed_training_data(model_config_params, local_folder, specific_file_name=None):
-    """
-    For lab use:
-    Collect all available transformed training data for ml service/model from local folder.
-    If specific_file_name supplied, only retrieve specific file
-    """
-
-    ml_service_code, ml_model_code, ml_model_version = (
-        model_config_params["mlService"],
-        model_config_params["code"],
-        model_config_params["version"],
-    )
-
-    path = f"{local_folder}/{ml_service_code}/{ml_model_code}/{str(ml_model_version).zfill(3)}/"
-    filenames = [f for f in listdir(path) if isfile(join(path, f))]
-
-    logger.info(
-        f"Collecting training data for ml service: {ml_service_code}, model code: {ml_model_code}, model version: {ml_model_version}. Collecting from folder: {path}"
-    )
-
-    li = []
-
-    if specific_file_name is not None:
-        df = pd.read_csv(f"{path}/{specific_file_name}", index_col=None, header=0)
-        return df, [f"{path}/{specific_file_name}"]
-    for filename in filenames:
-        df = pd.read_csv(f"{path}/{filename}", index_col=None, header=0)
-        li.append(df)
-    if len(li) == 0:
-        logger.warning(f"No training data found in folder: {path}")
-        return None, []
-    df_all = pd.concat(li, axis=0, ignore_index=True)
-    return df_all, [path + "/" + filename for filename in filenames]
-
-
-def collect_transformed_training_data(model_config_params, local_input_folder=None, input_file_name=None):
-    """
-    For lab use:
-     Collect all available transformed training data for ml service/model (or specific file only if specific_file_name supplied)
-     If local_input_folder specified: collect from local folder, otherwise collect from blobstore
-    """
-
-    if local_input_folder is None:
-        logger.info("Retrieving transformed data for training from blobstore")
-        dev_blob_service = EloiseDevBlobService()
-        (
-            transformed_training_data,
-            files_included,
-        ) = dev_blob_service.collect_all_training_data(model_config_params, specific_file_name=input_file_name)
-    else:
-        logger.info(f"Retrieving transformed data for training from local folder {local_input_folder}")
-        transformed_training_data, files_included = collect_local_transformed_training_data(
-            model_config_params,
-            local_input_folder,
-            specific_file_name=input_file_name,
-        )
-
-    return transformed_training_data, files_included
-
-
-def collect_model(model_config_params, local_model_folder=None):
-    """
-    For lab use:
-     Collect model objects
-     If local_model_folder specified: collect from local folder, otherwise collect from blobstore
-    """
-    ml_service = model_config_params["mlService"]
-    model_code = model_config_params["code"]
-    model_version = str(model_config_params["version"]).zfill(3)
-    model_id = ml_service + "_" + model_code + "_" + model_version
-
-    if local_model_folder is None:
-        dev_blob_service = EloiseDevBlobService()
-        all_model_objects = dev_blob_service.retrieve_model_objects(ml_service, model_code, model_version)
-    else:
-        full_path_in = join(local_model_folder, model_id + "_MODEL.joblib")
-        try:
-            model_objects = joblib.load(full_path_in)
-        except:
-            model_objects = {"model": None, "model_metadata": None}
-        try:
-            full_path_in = join(local_model_folder, model_id + "_SCALER.joblib")
-            scaler = joblib.load(full_path_in)
-        except:
-            scaler = None
-        try:
-            full_path_in = join(local_model_folder, model_id + "_ENCODER.joblib")
-            encoder = joblib.load(full_path_in)
-        except:
-            encoder = None
-
-        all_model_objects = {
-            "model": model_objects["model"],
-            "model_metadata": model_objects["model_metadata"],
-            "scaler_X": scaler,
-            "encoder": encoder,
-        }
-
-    return all_model_objects
 
 
 def apply_anomaly_thresholds(row, label=None, anom_threshold_type=None, anom_threshold_val=None):
