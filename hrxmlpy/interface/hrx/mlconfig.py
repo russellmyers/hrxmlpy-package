@@ -11,7 +11,7 @@ class MLConfig:
     ANOMALY_THRESHOLD_TYPE_PERCENTAGE = "P"
     ANOMALY_THRESHOLD_TYPE_RANK = "R"
 
-    DEFAULT_CLIENT_ID = "ZZZ"
+    DEFAULT_CUSTOMER_ID = "ZZZ"
     DEFAULT_COMPANY_ID = "Z99"
     DEFAULT_AUTH_ENDPOINT = "/auth/tokens"
     DEFAULT_ML_SERVICES_ENDPOINT = "/api/V2/ml-services"
@@ -27,7 +27,7 @@ class MLConfig:
         data = {
             "clientId": os.environ["MLCONFIG_API_CLIENT_ID"],
             "clientSecret": os.environ["MLCONFIG_API_CLIENT_SECRET"],
-            "customerId": os.environ.get("MLCONFIG_API_CUSTOMER_ID", MLConfig.DEFAULT_CLIENT_ID),
+            "customerId": os.environ.get("MLCONFIG_API_CUSTOMER_ID", MLConfig.DEFAULT_CUSTOMER_ID),
             "companyId": os.environ.get("MLCONFIG_API_COMPANY_ID", MLConfig.DEFAULT_COMPANY_ID)
         }
         url = os.environ["MLCONFIG_API_BASE_URL"] + os.environ.get("MLCONFIG_API_AUTH_ENDPOINT", MLConfig.DEFAULT_AUTH_ENDPOINT)

@@ -1,0 +1,215 @@
+{
+  "id": 8,
+  "code": "M005",
+  "description": "US Payroll Anomaly detection  model test",
+  "country": "US",
+  "version": 1,
+  "mlService": "PAD",
+  "variant": "MTHLY",
+  "dataSourceFields": [
+    {
+      "source": "CS",
+      "field": "",
+      "title": "MLService",
+      "featureType": "K",
+      "dataType": "C",
+      "conv": "CS[PAD]"
+    },
+    {
+      "source": "CS",
+      "field": "",
+      "title": "Model",
+      "featureType": "K",
+      "dataType": "C",
+      "conv": "MI[code]"
+    },
+    {
+      "source": "CS",
+      "field": "",
+      "title": "Version",
+      "featureType": "K",
+      "dataType": "C",
+      "conv": "MI[version]"
+    },
+    {
+      "source": "IT0001",
+      "field": "YYGCC",
+      "title": "GCC",
+      "featureType": "K",
+      "dataType": "S",
+      "conv": ""
+    },
+    {
+      "source": "IT0001",
+      "field": "YYLCC",
+      "title": "LCC",
+      "featureType": "K",
+      "dataType": "S",
+      "conv": ""
+    },
+    {
+      "source": "RT",
+      "field": "INPER",
+      "title": "Period",
+      "featureType": "K",
+      "dataType": "S",
+      "conv": ""
+    },
+    {
+      "source": "CS",
+      "field": "",
+      "title": "PayrollService",
+      "featureType": "K",
+      "dataType": "S",
+      "conv": "CS[EUH]"
+    },
+    {
+      "source": "SY",
+      "field": "SYSID",
+      "title": "System",
+      "featureType": "K",
+      "dataType": "S",
+      "conv": ""
+    },
+    {
+      "source": "IT0001",
+      "field": "MANDT",
+      "title": "Client",
+      "featureType": "K",
+      "dataType": "S",
+      "conv": ""
+    },
+    {
+      "source": "IT0001",
+      "field": "ABKRS",
+      "title": "ABKRS",
+      "featureType": "K",
+      "dataType": "S",
+      "conv": ""
+    }
+  ],
+  "selectionFields": [
+    {
+      "source": "IT0001",
+      "field": "PERNR",
+      "title": "PERNR",
+      "featureType": "K",
+      "dataType": "S",
+      "conv": ""
+    },
+    {
+      "source": "IT0001",
+      "field": "WERKS",
+      "title": "PersArea",
+      "featureType": "K",
+      "dataType": "S",
+      "conv": ""
+    },
+    {
+      "source": "IT0001",
+      "field": "PERSG",
+      "title": "EmpGroup",
+      "featureType": "K",
+      "dataType": "S",
+      "conv": ""
+    },
+    {
+      "source": "IT0001",
+      "field": "PERSK",
+      "title": "EmpSubgroup",
+      "featureType": "K",
+      "dataType": "S",
+      "conv": ""
+    },
+    {
+      "source": "RT",
+      "field": "FPPER",
+      "title": "ForPeriod",
+      "featureType": "K",
+      "dataType": "S",
+      "conv": ""
+    }
+  ],
+  "features": [
+    {
+      "source": "RT",
+      "field": "WT_/101",
+      "title": "/101_Gross",
+      "featureType": "N",
+      "dataType": "F",
+      "conv": ""
+    },
+    {
+      "source": "RT",
+      "field": "WT_/560",
+      "title": "/560_PaymentAmount",
+      "featureType": "N",
+      "dataType": "F",
+      "conv": ""
+    },
+    {
+      "source": "RT",
+      "field": "WT_/559",
+      "title": "/559_NettPay",
+      "featureType": "N",
+      "dataType": "F",
+      "conv": ""
+    },
+    {
+      "source": "RT",
+      "field": "WT_0010",
+      "title": "0010_BasicSalary",
+      "featureType": "N",
+      "dataType": "F",
+      "conv": ""
+    },
+    {
+      "source": "RT",
+      "field": "WT_/700",
+      "title": "/700_WagePlusERCont",
+      "featureType": "N",
+      "dataType": "F",
+      "conv": ""
+    }
+  ],
+  "hyperparameters": {
+    "trees": [],
+    "verbose": 0,
+    "num_trees": 200,
+    "max_samples": "auto",
+    "use_samples": "",
+    "forest_depths": "",
+    "all_features_used": "",
+    "AnomalyThresholdType": "R",
+    "AnomalyThresholdVal": 10
+  },
+  "labels": [],
+  "exclusions": [
+    {
+      "exclusionrecordnum": 1,
+      "sourceinfotype": "0001",
+      "sourcefieldname": "PERSG",
+      "exclusionvalue": "A"
+    },
+    {
+      "exclusionrecordnum": 1,
+      "sourceinfotype": "0001",
+      "sourcefieldname": "PERSK",
+      "exclusionvalue": "02"
+    },
+    {
+      "exclusionrecordnum": 2,
+      "sourceinfotype": "0001",
+      "sourcefieldname": "PERSG",
+      "exclusionvalue": "9"
+    },
+    {
+      "exclusionrecordnum": 2,
+      "sourceinfotype": "0001",
+      "sourcefieldname": "PERSK",
+      "exclusionvalue": "03"
+    }
+  ],
+  "mlType": "unsupervised",
+  "learningAlgorithm": "enhanced_isolation_forest"
+}

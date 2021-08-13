@@ -206,3 +206,52 @@ class Predicter:
             predictions, metrics = self._supervised_predict(predict_X_scaled, predict_y, emp_ids)
 
         return predictions, metrics
+
+if __name__ == '__main__':
+
+    import json
+    import sklearn
+    from hrxmlpy.interface.hrx.mlconfig import MLConfig
+    # Test TWV:
+    import joblib
+    with open('../../../tests/data/sample_train_params_twv.json') as json_file:
+        train_params = json.load(json_file)
+    with open('../../../tests/data/sample_model_config_params_twv.json') as json_file:
+        model_config_params = json.load(json_file)
+    transformed_data = pd.read_csv('../../../tests/data/sample_transformed_training_data_twv.csv')
+    t = Trainer(train_params, model_config_params)
+    train_features, train_labels, test_features, test_labels = t.split(transformed_data.drop(["Employee_Id"], axis=1))
+    model, scaler, predictions_train, predictions_test, metrics = t.train(train_features, train_labels, test_features, test_labels)
+    print(t)
+
+
+    model = joblib.load('../../../tests/data/sample_trained_model_twv.pkl')
+    p = Predicter(train_params, model_config_params,model,feature_scaler=None)
+    print(p)
+    transformed_prediction_data = pd.read_csv('../../../tests/data/sample_transformed_training_data_twv.csv')
+    predictions, metrics = p.predict(transformed_data.drop(["Employee_Id"], axis=1), transformed_data[['Employee_Id']])
+#    predictions, metrics = p.predict(transformed_prediction_data.drop(['Employee_Id'],axis=1),transformed_prediction_data[['Employee_Id']])
+#    print(predictions, metrics)
+    print(predictions, metrics)
+
+    # Test PAD:
+    with open('../../../tests/data/sample_train_params_pad.json') as json_file:
+        train_params = json.load(json_file)
+    with open('../../../tests/data/sample_model_config_params_pad.json') as json_file:
+        model_config_params = json.load(json_file)
+    transformed_data = pd.read_csv('../../../tests/data/sample_transformed_training_data_pad.csv')
+    t = Trainer(train_params, model_config_params)
+    train_features, train_labels, test_features, test_labels = t.split(transformed_data.drop(["Employee_Id"], axis=1))
+    model, scaler, predictions_train, predictions_test, metrics = t.train(train_features, train_labels, test_features, test_labels)
+    print(t)
+
+    p = Predicter(train_params, model_config_params, model, feature_scaler=None)
+    print(p)
+    transformed_prediction_data = pd.read_csv('../../../tests/data/sample_transformed_training_data_pad.csv')
+    predictions, metrics = p.predict(transformed_data.drop(["Employee_Id"], axis=1), transformed_data[['Employee_Id']])
+    #    predictions, metrics = p.predict(transformed_prediction_data.drop(['Employee_Id'],axis=1),transformed_prediction_data[['Employee_Id']])
+    #    print(predictions, metrics)
+    print(predictions, metrics)
+
+
+

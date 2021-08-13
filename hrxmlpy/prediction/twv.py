@@ -40,4 +40,30 @@ def predict(retrieved_model_objects, model_config_params, df):
 
     return predictions
 
+if __name__ == '__main__':
+    import json
+    import sklearn
+    import pandas as pd
+    from hrxmlpy.interface.hrx.mlconfig import MLConfig
+    from hrxmlpy.pipeline.train.trainer import Trainer
+
+    # Test TWV:
+    with open('../../tests/data/sample_train_params_twv.json') as json_file:
+        train_params = json.load(json_file)
+    with open('../../tests/data/sample_model_config_params_twv.json') as json_file:
+        model_config_params = json.load(json_file)
+    transformed_data = pd.read_csv('../../tests/data/sample_transformed_training_data_twv.csv')
+    t = Trainer(train_params, model_config_params)
+    train_features, train_labels, test_features, test_labels = t.split(transformed_data.drop(["Employee_Id"], axis=1))
+    model, scaler, predictions_train, predictions_test, metrics = t.train(train_features, train_labels, test_features,
+                                                                          test_labels)
+    print(t)
+
+    p = Predicter(train_params, model_config_params, model, feature_scaler=None)
+    print(p)
+    transformed_prediction_data = pd.read_csv('../../tests/data/sample_transformed_training_data_twv.csv')
+    res = predict({"model": model, "scaler_X": None}, model_config_params, transformed_prediction_data)
+    #    predictions, metrics = p.predict(transformed_prediction_data.drop(['Employee_Id'],axis=1),transformed_prediction_data[['Employee_Id']])
+    #    print(predictions, metrics)
+    print(res)
 

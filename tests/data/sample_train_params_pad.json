@@ -1,0 +1,16 @@
+{
+  "random_state": 42,
+  "test_size": 0,
+  "scaler": "standard",
+  "hyper_params": {
+    "trees": [],
+    "verbose": 0,
+    "num_trees": 30,
+    "max_samples": "auto",
+    "use_samples": "",
+    "forest_depths": "",
+    "all_features_used": "",
+    "AnomalyThresholdType": "R",
+    "AnomalyThresholdVal": 10
+  }
+}

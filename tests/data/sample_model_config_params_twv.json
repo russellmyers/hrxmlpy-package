@@ -1,0 +1,122 @@
+{
+  "id": 30,
+  "code": "W002",
+  "description": "Test TWV model Wday",
+  "country": "US",
+  "version": 1,
+  "mlService": "TWV",
+  "variant": "ALGT",
+  "dataSourceFields": [
+    {
+      "source": "CS",
+      "field": "",
+      "title": "Run_Id",
+      "featureType": "K",
+      "dataType": "C",
+      "conv": ""
+    },
+    {
+      "source": "CS",
+      "field": "",
+      "title": "Company_Id",
+      "featureType": "K",
+      "dataType": "C",
+      "conv": ""
+    },
+    {
+      "source": "CS",
+      "field": "",
+      "title": "Pay_Group",
+      "featureType": "K",
+      "dataType": "C",
+      "conv": ""
+    },
+    {
+      "source": "CS",
+      "field": "",
+      "title": "Pay_Period",
+      "featureType": "K",
+      "dataType": "C",
+      "conv": ""
+    }
+  ],
+  "selectionFields": [
+    {
+      "source": "CS",
+      "field": "",
+      "title": "Employee_Id",
+      "featureType": "K",
+      "dataType": "S",
+      "conv": ""
+    },
+    {
+      "source": "CS",
+      "field": "",
+      "title": "Employee_Group",
+      "featureType": "K",
+      "dataType": "S",
+      "conv": ""
+    },
+    {
+      "source": "CS",
+      "field": "",
+      "title": "Retro_Period",
+      "featureType": "K",
+      "dataType": "S",
+      "conv": ""
+    }
+  ],
+  "features": [
+    {
+      "source": "RT",
+      "field": "WT_Gross",
+      "title": "Gross_Pay",
+      "featureType": "N",
+      "dataType": "F",
+      "conv": ""
+    }
+  ],
+  "hyperparameters": {
+    "max_iter": 500,
+    "AnomalyThresholdType": "A",
+    "AnomalyThresholdVal": 20
+  },
+  "labels": [
+    {
+      "source": "RT",
+      "field": "WT_Fed",
+      "title": "Federal Withholding [USA]-W_FW-Federal: Federal",
+      "featureType": "N",
+      "dataType": "F",
+      "conv": ""
+    }
+  ],
+  "exclusions": [
+    {
+      "exclusionrecordnum": 1,
+      "sourceinfotype": "0001",
+      "sourcefieldname": "PERSG",
+      "exclusionvalue": "A"
+    },
+    {
+      "exclusionrecordnum": 1,
+      "sourceinfotype": "0001",
+      "sourcefieldname": "PERSK",
+      "exclusionvalue": "02"
+    },
+    {
+      "exclusionrecordnum": 2,
+      "sourceinfotype": "0001",
+      "sourcefieldname": "PERSG",
+      "exclusionvalue": "9"
+    },
+    {
+      "exclusionrecordnum": 2,
+      "sourceinfotype": "0001",
+      "sourcefieldname": "PERSK",
+      "exclusionvalue": "03"
+    }
+  ],
+  "mlType": "supervised_regression",
+  "learningAlgorithm": "scikit_neural_network_regressor"
+}
