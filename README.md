@@ -12,10 +12,10 @@ Training of customer models is performed using one of the following learning alg
 
 | ml_service learningAlgorithm selected in ML Config API | class used | type  | example use case |
 |---|---|---|---|
-| "scikit_neural_network_regressor" |  scikit-learn's ```sklearn.neural_network.MLPRegressor``` class | Supervised, regression |eg use for TWV |
-|"scikit_isolation_forest"  |scikit-learn's standard Isolation Forest class (```sklearn.ensemble.IsolationForest```) |  Unsupervised | No longer used |
-|"enhanced_isolation_forest" |Alight's enhanced Isolation Forest algorithm contained in this package (```hrxmlpy.algorithms.isolation_forest.EnhancedIsolationForest```) | Unsupervised |eg use for PAD broad spectrum payroll anomaly detection |
- can be defined using learning algorithms 
+| "scikit_neural_network_regressor" |Use scikit-learn's ```sklearn.neural_network.MLPRegressor``` class | Supervised, regression |eg use for TWV |
+|"scikit_isolation_forest"  |Use scikit-learn's standard Isolation Forest class (```sklearn.ensemble.IsolationForest```) |  Unsupervised | No longer used |
+|"enhanced_isolation_forest" |Use Alight's enhanced Isolation Forest algorithm (contained in this package) (```hrxmlpy.algorithms.isolation_forest.EnhancedIsolationForest```) | Unsupervised |eg use for PAD broad spectrum payroll anomaly detection |
+
 
 Currently, the following ml_services are specifically supported with additional functionality used by Eloise (although the ml config api has been designed to be generally applicable to other ml_services):
 >- Tax Withholding Verification (TWV)
