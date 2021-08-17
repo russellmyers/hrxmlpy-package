@@ -2,16 +2,42 @@
  
 The hrxmlpy package provides core functionality to perform data transforms, ML training and ML predictions for models configured in the MLConfig API.
 
-Currently, the following ml_services are specifically supported (although the ml config api is designed to be generally applicable to other ml_services):
+Main classes provided in the package are:
+-  **DataTransformer**
+-  **Trainer**
+-  **Predicter**
+-  **MLConfig**
+
+Training of customer models is performed using one of the following learning algorithms, based on the "learningAlgorithm" parameter specified when defining the ml_service used by the customer model in the ml config api (see Trainer class for more information):
+
+| ml_service learningAlgorithm selected in ML Config API | class used | type  | example use case |
+|---|---|---|---|
+| "scikit_neural_network_regressor" |  scikit-learn's ```sklearn.neural_network.MLPRegressor``` class | Supervised, regression |eg use for TWV |
+|"scikit_isolation_forest"  |scikit-learn's standard Isolation Forest class (```sklearn.ensemble.IsolationForest```) |  Unsupervised | No longer used |
+|"enhanced_isolation_forest" |Alight's enhanced Isolation Forest algorithm contained in this package (```hrxmlpy.algorithms.isolation_forest.EnhancedIsolationForest```) | Unsupervised |eg use for PAD broad spectrum payroll anomaly detection |
+ can be defined using learning algorithms 
+
+Currently, the following ml_services are specifically supported with additional functionality used by Eloise (although the ml config api has been designed to be generally applicable to other ml_services):
 >- Tax Withholding Verification (TWV)
 >- Broad Spectrum Anomaly Detection (PAD)
+
+Training flow:  
+
+
+![Training flow diagram](./img_train_flow.PNG?raw=true "Training flow")
+
+
+Prediction flow:  
+
+![Prediction flow diagram](./img_predn_flow.PNG?raw=true "Prediction flow")
+
 
 ## Package structure
 The package has the following structure:
 
 - algorithms
-  - Contains any proprietary Alight ML algorithms used within hrxmlpy (currently includes "Enhanced Isolation Forest").  
-   *Note: Various standard scikit-learn algorithms are also used "as-is" within hrxmlpy*
+  - Contains any proprietary ML algorithms developed by Alight for use within hrxmlpy (currently includes "Enhanced Isolation Forest").  
+   *Note: Various standard scikit-learn algorithms can also be used "as-is" within hrxmlpy. See logic in train method of Trainer class below for more details*
 
 - interface
   -  Contains an "MLConfig" class to provide wrapper access to the MLConfig API
@@ -56,7 +82,7 @@ Other methods available:
     
 ## Trainer Class
 `hrxmlpy.pipeline.train.trainer.Trainer`  
-Class to manage training of a ML Model, using configuration specified in model_config_params and train_params
+Class to manage training of a ML Model, based on configuration specified in model_config_params and train_params
 
 Main methods:
 * \_\_**init**\_\_(train_params, model_config_params)   

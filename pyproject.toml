@@ -1,8 +1,9 @@
 [tool.poetry]
 name = "hrxmlpy"
 version = "0.1.0"
-description = ""
-authors = ["russellmyers <flipside@netspace.net.au>"]
+description = "Collection of classes to perform ML transform, training and prediction using ML Config API"
+authors = ["Russell B Myers <russell.myers@ngahr.com>",
+           "Prashant Patel <prashant.patel@ngahr.com>"]
 readme = 'README.md'
 
 [tool.poetry.dependencies]
